@@ -206,6 +206,9 @@ vim.o.scrolloff = 10
 vim.o.shiftwidth = 4
 vim.o.tabstop = 4
 
+-- For session restore
+vim.o.sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -571,6 +574,23 @@ require('lazy').setup({
         },
       }
     end,
+  },
+  {
+    'rmagatti/auto-session',
+    lazy = false,
+
+    ---enables autocomplete for opts
+    ---@module "auto-session"
+    ---@type AutoSession.Config
+    opts = {
+      suppressed_dirs = { '~/', '/' },
+      -- log_level = 'debug',
+      auto_create = function()
+        local cmd = 'git rev-parse --is-inside-work-tree'
+        return vim.fn.system(cmd) == 'true\n'
+      end,
+      use_git_branch = false,
+    },
   },
   {
     'nvim-neo-tree/neo-tree.nvim',
