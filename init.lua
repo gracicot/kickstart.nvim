@@ -777,7 +777,7 @@ require('lazy').setup({
           filtered_items = {
             visible = false, -- when true, they will just be displayed differently than normal items
             hide_dotfiles = false,
-            hide_gitignored = true,
+            hide_gitignored = false,
             hide_hidden = true, -- only works on Windows for hidden files/directories
             hide_by_name = {
               --"node_modules"
@@ -837,7 +837,7 @@ require('lazy').setup({
               ['<down>'] = 'move_cursor_down',
               ['<C-n>'] = 'move_cursor_down',
               ['<up>'] = 'move_cursor_up',
-              ['<C-p>'] = 'move_cursor_up',
+              ['<C-e>'] = 'move_cursor_up',
             },
           },
 
@@ -1066,6 +1066,7 @@ require('lazy').setup({
       -- See :help vim.diagnostic.Opts
       vim.diagnostic.config {
         severity_sort = true,
+        virtual_lines = true,
         float = { border = 'rounded', source = 'if_many' },
         underline = { severity = vim.diagnostic.severity.ERROR },
         signs = vim.g.have_nerd_font and {
@@ -1108,7 +1109,18 @@ require('lazy').setup({
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         clangd = {
-          cmd = { 'clangd' },
+          cmd = {
+            -- see clangd --help-hidden
+            'clangd',
+            '--background-index',
+            -- by default, clang-tidy use -checks=clang-diagnostic-*,clang-analyzer-*
+            -- to add more checks, create .clang-tidy file in the root directory
+            -- and add Checks key, see https://clang.llvm.org/extra/clang-tidy/
+            '--clang-tidy',
+            '--completion-style=bundled',
+            '--cross-file-rename',
+            '--header-insertion=iwyu',
+          },
         },
         -- gopls = {},
         -- pyright = {},
