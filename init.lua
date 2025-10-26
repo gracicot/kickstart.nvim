@@ -339,6 +339,11 @@ require('lazy').setup({
   --
   -- Use `opts = {}` to automatically pass options to a plugin's `setup()` function, forcing the plugin to be loaded.
   --
+  {
+    'vhyrro/luarocks.nvim',
+    priority = 999, -- Very high priority is required, luarocks.nvim should run as the first plugin in your config.
+    config = true,
+  },
   { 'numToStr/Comment.nvim', opts = {} },
   {
     'alexghergh/nvim-tmux-navigation',
@@ -385,6 +390,7 @@ require('lazy').setup({
       },
     },
   },
+  { 'nvim-tree/nvim-web-devicons', enabled = true, opts = {} },
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
@@ -605,10 +611,22 @@ require('lazy').setup({
       local nvim_neo_tree = require 'neo-tree'
 
       -- If you want icons for diagnostic errors, you'll need to define them somewhere:
-      vim.fn.sign_define('DiagnosticSignError', { text = ' ', texthl = 'DiagnosticSignError' })
-      vim.fn.sign_define('DiagnosticSignWarn', { text = ' ', texthl = 'DiagnosticSignWarn' })
-      vim.fn.sign_define('DiagnosticSignInfo', { text = ' ', texthl = 'DiagnosticSignInfo' })
-      vim.fn.sign_define('DiagnosticSignHint', { text = '󰌵', texthl = 'DiagnosticSignHint' })
+      vim.diagnostic.config {
+        signs = {
+          text = {
+            [vim.diagnostic.severity.ERROR] = ' ',
+            [vim.diagnostic.severity.WARN] = ' ',
+            [vim.diagnostic.severity.INFO] = '󰋼 ',
+            [vim.diagnostic.severity.HINT] = '󰌵 ',
+          },
+          numhl = {
+            [vim.diagnostic.severity.ERROR] = '',
+            [vim.diagnostic.severity.WARN] = '',
+            [vim.diagnostic.severity.HINT] = '',
+            [vim.diagnostic.severity.INFO] = '',
+          },
+        },
+      }
 
       nvim_neo_tree.setup {
         event_handlers = {
@@ -1355,6 +1373,7 @@ require('lazy').setup({
     'akinsho/bufferline.nvim',
     version = '*',
     dependencies = 'nvim-tree/nvim-web-devicons',
+    after = 'catppuccin',
     config = function()
       require('bufferline').setup {
         options = {
@@ -1364,7 +1383,7 @@ require('lazy').setup({
             reveal = { 'close' },
           },
         },
-        highlights = require('catppuccin.groups.integrations.bufferline').get(),
+        highlights = require('catppuccin.special.bufferline').get_theme(),
       }
     end,
   },
