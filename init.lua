@@ -1138,6 +1138,7 @@ require('lazy').setup({
             '--completion-style=bundled',
             '--cross-file-rename',
             '--header-insertion=iwyu',
+            '--experimental-modules-support',
           },
         },
         -- gopls = {},
