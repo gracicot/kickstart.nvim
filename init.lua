@@ -298,6 +298,10 @@ vim.keymap.set('n', '<c-w>l', ':wincmd o<cr>', { silent = true })
 vim.keymap.set({ 'i', 'c' }, '<c-n>', '<cr>', { remap = true })
 vim.keymap.set({ 'i', 'c' }, '<c-j>', '<c-n>')
 
+vim.api.nvim_create_user_command('Closeall', function()
+  vim.cmd '%bd|e#|bd#'
+end, {})
+
 -- NOTE: Some terminals have colliding keymaps or are not able to send distinct keycodes
 -- vim.keymap.set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
 -- vim.keymap.set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
