@@ -175,6 +175,9 @@ vim.o.timeoutlen = 300
 vim.o.splitright = true
 vim.o.splitbelow = true
 
+-- Make scroll precise, need terminal support for actual scroll wheel to send multiple events
+vim.opt.mousescroll = "ver:1,hor:1"
+
 -- Sets how neovim will display certain whitespace characters in the editor.
 --  See `:help 'list'`
 --  and `:help 'listchars'`
